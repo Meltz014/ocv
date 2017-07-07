@@ -1,0 +1,407 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+    Version="10.0"
+    VendorName="SlickEdit"
+    TemplateName="Other C/C++"
+    WorkingDir=".">
+    <Config
+        Name="WinDebug"
+        Type="vcpp"
+        Version="1"
+        DebugCallbackName="windbg"
+        OutputFile="%bdfizix.exe"
+        CompilerConfigName="Cygwin-4.5.3-x86_64-w64-mingw32">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                Dialog="_vcpp_options_form Compile"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                OutputExts="*.o"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec
+                    CmdLine='cl /c %defs /W3 /GB /Ob0 /Gd /GS %~other /Fo"%bd%n%oe" %i "%f"'
+                    OtherOptions="/nologo"/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link"
+                ShowOnMenu="Never"
+                Dialog="_vcpp_options_form Link"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec
+                    CmdLine='link %~other /INCREMENTAL /OUT:"%o" %f %libs'
+                    OtherOptions="/NOLOGO"/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine="mingw32-make"/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                Dialog="_vcpp_options_form Run/Debug"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rp">
+                <Exec CmdLine="release\fizix.exe"/>
+            </Target>
+            <Target
+                Name="DebugWinDbg"
+                MenuCaption="Debug - WinDbg"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec
+                    CmdLine="vcproj_windbg_debug"
+                    Type="Slick-C"/>
+            </Target>
+            <Target
+                Name="DebugVisualStudio"
+                MenuCaption="Debug - Visual Studio"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec CmdLine='devenv "%o"'/>
+            </Target>
+            <Target
+                Name="DebugMDbg"
+                MenuCaption="&amp;Debug - MDbg"
+                Dialog="_vcpp_options_form Run/Debug"
+                Deletable="0"
+                SaveOption="SaveNone"
+                EnableBuildFirst="0"
+                RunFromDir="%rw">
+                <Exec CmdLine='mdbg "%o"'/>
+            </Target>
+            <Target
+                Name="dash"
+                MenuCaption="-"
+                Deletable="0">
+                <Exec/>
+            </Target>
+            <Target
+                Name="Visual C++ Options"
+                MenuCaption="Visual C++ &amp;Options..."
+                ShowOnMenu="HideIfNoCmdLine"
+                Deletable="0"
+                SaveOption="SaveNone">
+                <Exec
+                    CmdLine="vcppoptions"
+                    Type="Slick-C"/>
+            </Target>
+            <Target
+                Name="Build Debug"
+                MenuCaption="&amp;Build Debug"
+                RunFromDir="%rw"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="mingw32-make Makefile.Debug"/>
+            </Target>
+            <Target
+                Name="Execute OCV"
+                MenuCaption="&amp;Execute OCV"
+                RunFromDir="%rp"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+        </Menu>
+        <Includes>
+            <Include Dir="C:/Qt/5.8/mingw53_32/include/"/>
+        </Includes>
+        <List Name="GNUC Options">
+            <Item
+                Name="LinkerOutputType"
+                Value="Executable"/>
+        </List>
+        <PreBuildCommands StopOnError="1">
+            <Exec CmdLine="qmake -makefile"/>
+        </PreBuildCommands>
+        <Libs PreObjects="0">
+            <Lib File="C:/Qt/5.8/mingw53_32/lib/"/>
+        </Libs>
+    </Config>
+    <Config
+        Name="Debug"
+        Type="cpp"
+        DebugCallbackName="gdb"
+        OutputFile="%bdOCV"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                CaptureOutputWith="ProcessBuffer"
+                OutputExts="*.o"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='cc -c -g %i %defd -o "%bd%n.o" "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link">
+                <Exec CmdLine='cc -g -o "%o" %f %libs'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" build "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" rebuild "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rw">
+                <Exec CmdLine='vsdebugio -prog "%o"'/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rp">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+            <Target
+                Name="Execute OCV"
+                MenuCaption="&amp;Execute OCV"
+                RunFromDir="%rp"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+        </Menu>
+    </Config>
+    <Config
+        Name="Release"
+        Type="cpp"
+        DebugCallbackName="gdb"
+        OutputFile="%bdOCV"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveCurrent"
+                OutputExts="*.o"
+                RunFromDir="%rw">
+                <Exec CmdLine='cc -c -O %i %defd -o "%bd%n.o" "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link">
+                <Exec CmdLine='cc -O -o "%o" %f %libs'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" build "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine='"%(VSLICKBIN1)vsbuild" rebuild "%w" "%r"'/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rw">
+                <Exec CmdLine='vsdebugio -prog "%o"'/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                SaveOption="SaveNone"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                RunFromDir="%rp">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+            <Target
+                Name="Execute OCV"
+                MenuCaption="&amp;Execute OCV"
+                RunFromDir="%rp"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+        </Menu>
+    </Config>
+    <Rules Name="Compile">
+        <Rule
+            InputExts="*.s"
+            OutputExts="*.o"
+            LinkObject="1">
+            <Exec CmdLine='as -o "%bd%n.o" "%f"'/>
+        </Rule>
+    </Rules>
+    <Files>
+        <Folder
+            Name="Source Files"
+            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d;*.m;*.mm;*.go">
+            <F
+                N="/opencv/sources/*.c"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.c"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.c++"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.c++"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.cc"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.cc"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.cp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.cp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.cpp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.cpp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.cxx"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.cxx"
+                Recurse="1"
+                Excludes=""/>
+            <F N="main.cpp"/>
+            <F N="../fizix/mainwindow.cpp"/>
+            <F N="rasterwindow.cpp"/>
+            <F N="vid.cpp"/>
+        </Folder>
+        <Folder
+            Name="Header Files"
+            Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.h++;*.inc;*.sh;*.cpy;*.if">
+            <F
+                N="/opencv/sources/*.h"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.h"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.hh"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.hh"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.hpp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.hpp"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.hxx"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.hxx"
+                Recurse="1"
+                Excludes=""/>
+            <F N="commontypes.h"/>
+            <F N="../fizix/mainwindow.h"/>
+            <F N="rasterwindow.h"/>
+            <F N="vid.h"/>
+        </Folder>
+        <Folder
+            Name="Resource Files"
+            Filters="*.ico;*.cur;*.dlg"/>
+        <Folder
+            Name="Bitmaps"
+            Filters="*.bmp"/>
+        <Folder
+            Name="Other Files"
+            Filters="">
+            <F
+                N="/opencv/sources/*.inl"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.inl"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/opencv/sources/*.xpm"
+                Recurse="1"
+                Excludes=""/>
+            <F
+                N="/Qt/5.8/mingw53_32/include/*.xpm"
+                Recurse="1"
+                Excludes=""/>
+            <F N="rasterwindow.pri"/>
+            <F N="rasterwindow.pro"/>
+        </Folder>
+    </Files>
+</Project>
