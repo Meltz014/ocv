@@ -11,6 +11,15 @@ MainWindow::MainWindow( )
    qDebug( ) << "Hello";
 
    video_obj = Vid( );
+   roll_time = 1.0f;
+
+   slider = new RollTimeGroup("Set Roll Time", this);
+   slider->setMinimum( 1 );
+   slider->setMaximum( 10 );
+   connect(slider, SIGNAL(valueChanged(int)), this, SLOT(updateRollTime( int )));
+
+   exportgroup = new ExportGroup( "Export", this );
+   connect(exportgroup, SIGNAL(doExport(export_options)), this, SLOT(exportFrame( export_options )));
 
    current_frame_display = new QLabel(tr("Insert image here"));
    generated_img_display = new QLabel(tr("Insert image here"));
@@ -18,14 +27,23 @@ MainWindow::MainWindow( )
    file_button = new QPushButton( "Select File", this );
    file_button->setFocusPolicy( Qt::NoFocus );
    file_button->setGeometry( QRect( QPoint( 100, 100 ), QSize( 200, 50 ) ) );
-   connect( file_button, SIGNAL( released( ) ), this, SLOT( loadFileButtonCallback(  ) ) );
+   connect( file_button, SIGNAL( released( ) ), this, SLOT( loadFileButtonCallback( ) ) );
+
+   generate_button = new QPushButton( "Generate Effect", this );
+   generate_button->setFocusPolicy( Qt::NoFocus );
+   generate_button->setGeometry( QRect( QPoint( 100, 100 ), QSize( 200, 50 ) ) );
+   connect( generate_button, SIGNAL( released( ) ), this, SLOT( generateEffectCallback( ) ) );
 
    // create layout
    QGridLayout *mainLayout = new QGridLayout;
    mainLayout->setColumnStretch( 0, 1 );
-   mainLayout->addWidget( current_frame_display, 0, 0, 1, 1 );
-   mainLayout->addWidget( generated_img_display, 0, 1, 1, 1 );
-   mainLayout->addWidget( file_button, 1, 0, 1, 1 );
+
+   mainLayout->addWidget( slider, 0, 0, 1, 1 );
+   mainLayout->addWidget( exportgroup, 1, 0, 1, 1 );
+   mainLayout->addWidget( current_frame_display, 0, 1, 1, 1 );
+   mainLayout->addWidget( generated_img_display, 0, 2, 1, 1 );
+   mainLayout->addWidget( file_button, 1, 1, 1, 1 );
+   mainLayout->addWidget( generate_button, 1, 2, 1, 1 );
    setLayout( mainLayout );
 
    setWindowTitle( tr( "The Window" ) );
@@ -38,6 +56,23 @@ MainWindow::MainWindow( )
  * 
  * @author David Melton (7/7/2017)
  */
+void MainWindow::generateEffectCallback( )
+{
+   RollingShutter *generator = new RollingShutter( &video_obj );
+   connect( generator, SIGNAL( rowProcessed( ) ), this, SLOT( effectRowProcessed( ) ) );
+   generator->setRollTime( roll_time );
+   generator->generateEffect( generated_img );
+   video_obj.getCurrentFrame( disp_img );
+   updateGui( );
+}
+
+void MainWindow::effectRowProcessed( )
+{
+   video_obj.getCurrentFrame( disp_img );
+   updateGui( );
+   qApp->processEvents( );
+}
+
 void MainWindow::loadFileButtonCallback( )
 {
    QString file_name = QFileDialog::getOpenFileName( this,
@@ -76,23 +111,27 @@ void MainWindow::loadVid( QString file_name )
  */
 void MainWindow::updateGui( )
 {
-   current_frame_display->setPixmap( QPixmap::fromImage( QImage( disp_img.data,
-                                                    disp_img.cols,
-                                                    disp_img.rows,
-                                                    disp_img.step,
-                                                    QImage::Format_RGB888
-                                                   )
-                                           )
-                       );
-   generated_img_display->setPixmap( QPixmap::fromImage( QImage( generated_img.data,
-                                                    generated_img.cols,
-                                                    generated_img.rows,
-                                                    generated_img.step,
-                                                    QImage::Format_RGB888
-                                                   )
-                                           )
-                       );
+   if ( !disp_img.empty( ) )
+   {
+      current_frame_display->setPixmap( QPixmap::fromImage( QImage( disp_img.data,
+                                                       disp_img.cols,
+                                                       disp_img.rows,
+                                                       disp_img.step,
+                                                       QImage::Format_RGB888
+                                                      )
+                                              )
+                          );
+      generated_img_display->setPixmap( QPixmap::fromImage( QImage( generated_img.data,
+                                                       generated_img.cols,
+                                                       generated_img.rows,
+                                                       generated_img.step,
+                                                       QImage::Format_RGB888
+                                                      )
+                                              )
+                          );
+   }
    this->adjustSize( );
+   update( );
 }
 
 /**
@@ -143,6 +182,7 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
          {
             video_obj.scaleDown( );
             video_obj.getCurrentFrame( disp_img );
+            video_obj.getCurrentFrame( generated_img );
             updateGui( );
          }
          break;
@@ -152,10 +192,55 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
          {
             video_obj.scaleUp( );
             video_obj.getCurrentFrame( disp_img );
+            video_obj.getCurrentFrame( generated_img );
             updateGui( );
          }
          break;
       default:
          break;
+   }
+}
+
+void MainWindow::updateRollTime( int value )
+{
+   roll_time = (double)value;
+   qDebug( ) << value;
+}
+
+void MainWindow::exportFrame( export_options option )
+{
+   Mat out_img;
+   Mat disp2;
+   Mat flow;
+   qDebug( ) << "export type" << option;
+   switch ( option )
+   {
+      case SOURCE_FRAME:
+         if ( !disp_img.empty( ) )
+         {
+            cv::cvtColor( disp_img, out_img, CV_RGB2BGR );
+            cv::imwrite( "C:/cygwin/home/501219/OCV/out0.jpg", out_img );
+            
+            video_obj.getNextFrame( disp2 );
+            cv::cvtColor( disp2, out_img, CV_RGB2BGR );
+            cv::imwrite( "C:/cygwin/home/501219/OCV/out2.jpg", out_img );
+
+            //interpolate
+            interpolateFrames( disp_img, disp2, out_img );
+            cv::cvtColor( out_img, out_img, CV_RGB2BGR );
+            cv::imwrite( "C:/cygwin/home/501219/OCV/out1.jpg", out_img );
+            qDebug( ) << "img exported";
+         }
+         break;
+      case OUT_FRAME:
+         if ( !generated_img.empty( ) )
+         {
+            cv::cvtColor( generated_img, out_img, CV_RGB2BGR );
+            cv::imwrite( "C:/cygwin/home/501219/OCV/out.jpg", out_img );
+            qDebug( ) << "img exported";
+         }
+         break;
+      default:
+         qDebug( ) << "invalid";
    }
 }

@@ -3,7 +3,8 @@
     Version="10.0"
     VendorName="SlickEdit"
     TemplateName="Other C/C++"
-    WorkingDir=".">
+    WorkingDir="."
+    VCSProject="Git:">
     <Config
         Name="WinDebug"
         Type="vcpp"
@@ -41,11 +42,14 @@
             <Target
                 Name="Build"
                 MenuCaption="&amp;Build"
-                CaptureOutputWith="ProcessBuffer"
                 Deletable="0"
                 SaveOption="SaveWorkspaceFiles"
-                RunFromDir="%rw">
-                <Exec CmdLine="mingw32-make"/>
+                RunFromDir="%rw"
+                CaptureOutputWith="ProcessBuffer">
+                <Set
+                    Name="buildout"
+                    Value="ocv.exe"/>
+                <Exec CmdLine="build.bat ocv.pro"/>
             </Target>
             <Target
                 Name="Rebuild"
@@ -122,7 +126,33 @@
                 RunFromDir="%rp"
                 CaptureOutputWith="ProcessBuffer"
                 SaveOption="SaveWorkspaceFiles">
-                <Exec CmdLine="release\ocv.exe"/>
+                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30"/>
+            </Target>
+            <Target
+                Name="Execute OCV no capture"
+                MenuCaption="&amp;Execute OCV no capture"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30"/>
+            </Target>
+            <Target
+                Name="Build test"
+                MenuCaption="&amp;Build test"
+                RunFromDir="%rw"
+                SaveOption="SaveWorkspaceFiles"
+                CaptureOutputWith="ProcessBuffer">
+                <Set
+                    Name="buildout"
+                    Value="test.exe"/>
+                <Exec CmdLine="build.bat test.pro"/>
+            </Target>
+            <Target
+                Name="exec"
+                MenuCaption="&amp;exec"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveNone"
+                RunFromDir="%rp">
+                <Exec CmdLine="exec.bat"/>
             </Target>
         </Menu>
         <Includes>
@@ -133,9 +163,6 @@
                 Name="LinkerOutputType"
                 Value="Executable"/>
         </List>
-        <PreBuildCommands StopOnError="1">
-            <Exec CmdLine="qmake -makefile"/>
-        </PreBuildCommands>
         <Libs PreObjects="0">
             <Lib File="C:/Qt/5.8/mingw53_32/lib/"/>
         </Libs>
@@ -203,6 +230,28 @@
                 SaveOption="SaveWorkspaceFiles">
                 <Exec CmdLine="release\ocv.exe"/>
             </Target>
+            <Target
+                Name="Execute OCV no capture"
+                MenuCaption="&amp;Execute OCV no capture"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+            <Target
+                Name="Build test"
+                MenuCaption="&amp;Build test"
+                RunFromDir="%rw"
+                SaveOption="SaveWorkspaceFiles"
+                CaptureOutputWith="ProcessBuffer">
+                <Exec CmdLine="mingw32-make"/>
+            </Target>
+            <Target
+                Name="exec"
+                MenuCaption="&amp;exec"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveNone">
+                <Exec CmdLine="exec.bat"/>
+            </Target>
         </Menu>
     </Config>
     <Config
@@ -268,6 +317,28 @@
                 SaveOption="SaveWorkspaceFiles">
                 <Exec CmdLine="release\ocv.exe"/>
             </Target>
+            <Target
+                Name="Execute OCV no capture"
+                MenuCaption="&amp;Execute OCV no capture"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine="release\ocv.exe"/>
+            </Target>
+            <Target
+                Name="Build test"
+                MenuCaption="&amp;Build test"
+                RunFromDir="%rw"
+                SaveOption="SaveWorkspaceFiles"
+                CaptureOutputWith="ProcessBuffer">
+                <Exec CmdLine="mingw32-make"/>
+            </Target>
+            <Target
+                Name="exec"
+                MenuCaption="&amp;exec"
+                CaptureOutputWith="ProcessBuffer"
+                SaveOption="SaveNone">
+                <Exec CmdLine="exec.bat"/>
+            </Target>
         </Menu>
     </Config>
     <Rules Name="Compile">
@@ -330,9 +401,15 @@
                 N="/Qt/5.8/mingw53_32/include/*.cxx"
                 Recurse="1"
                 Excludes=""/>
+            <F N="exportgroup.cpp"/>
+            <F N="interpolate.cpp"/>
             <F N="main.cpp"/>
+            <F N="main_test.cpp"/>
             <F N="../fizix/mainwindow.cpp"/>
             <F N="rasterwindow.cpp"/>
+            <F N="roll_time_group.cpp"/>
+            <F N="rollingshutter.cpp"/>
+            <F N="simpleflow_demo.cpp"/>
             <F N="vid.cpp"/>
         </Folder>
         <Folder
@@ -371,8 +448,13 @@
                 Recurse="1"
                 Excludes=""/>
             <F N="commontypes.h"/>
+            <F N="exportgroup.h"/>
+            <F N="inputparser.h"/>
+            <F N="interpolate.h"/>
             <F N="../fizix/mainwindow.h"/>
             <F N="rasterwindow.h"/>
+            <F N="roll_time_group.h"/>
+            <F N="rollingshutter.h"/>
             <F N="vid.h"/>
         </Folder>
         <Folder
@@ -400,8 +482,12 @@
                 N="/Qt/5.8/mingw53_32/include/*.xpm"
                 Recurse="1"
                 Excludes=""/>
+            <F
+                N="makefile.demothing"
+                Type="Makefile"/>
             <F N="rasterwindow.pri"/>
             <F N="rasterwindow.pro"/>
+            <F N="test.pro"/>
         </Folder>
     </Files>
 </Project>

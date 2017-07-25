@@ -12,6 +12,10 @@ class Vid
    bool getNextFrame( cv::OutputArray image );
    bool getPrevFrame( cv::OutputArray image );
    bool getCurrentFrame( cv::OutputArray image );
+   int  getNumFrames( );
+   int  getFPS( );
+   QSize getQSize( );
+   cv::Size getCSize( );
    void scaleDown( );
    void scaleUp( );
    bool isEmpty( );

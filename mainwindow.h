@@ -2,7 +2,10 @@
 #define MAINWINDOW_H
 
 #include "commontypes.h"
+#include "rollingshutter.h"
 #include "vid.h"
+#include "roll_time_group.h"
+#include "exportgroup.h"
 
 class QLabel;
 
@@ -14,7 +17,11 @@ class MainWindow : public QWidget
    MainWindow( );
 
  private slots:
+   void effectRowProcessed( );
    void loadFileButtonCallback( );
+   void generateEffectCallback( );
+   void updateRollTime( int value );
+   void exportFrame( export_options option );
 
  protected:
   void resizeEvent( QResizeEvent *event ) override;
@@ -24,13 +31,17 @@ class MainWindow : public QWidget
    void updateGui( );
    void loadVid( QString file_name );
 
+   RollTimeGroup *slider;
+   ExportGroup *exportgroup;
    QLabel *current_frame_display;
    QLabel *generated_img_display;
    QPushButton *file_button;
+   QPushButton *generate_button;
    cv::Mat orig_img;
    cv::Mat disp_img;
    cv::Mat generated_img;
    Vid video_obj;
+   double roll_time;
 };
 
 #endif // MAINWINDOW_H

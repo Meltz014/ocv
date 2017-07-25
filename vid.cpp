@@ -38,10 +38,13 @@ Vid::Vid( QString file_name )
       }
       is_empty = false;
       current_frame = -1;
-      num_frames = video_cap.get( cv::CAP_PROP_FRAME_COUNT );
+      num_frames = getNumFrames( );
       scale = false;
       scale_w = DEFAULT_SCALE_VID;
       scale_h = DEFAULT_SCALE_VID;
+      qDebug( ) << "Frame Rate: " << video_cap.get( cv::CAP_PROP_FPS );
+      qDebug( ) << "Num Frames: " << getNumFrames( );
+
    }
 }
 
@@ -109,6 +112,7 @@ bool Vid::getCurrentFrame( cv::OutputArray image )
          cv::resize( image, image, cv::Size( ), scale_w, scale_h, cv::INTER_LINEAR );
       }
    }
+   qDebug( ) << "Get frame stat" << stat << " current_frame " << current_frame;
    return stat;
 }
 
@@ -157,4 +161,28 @@ bool Vid::getPrevFrame( cv::OutputArray image )
       }
    }
    return false;
+}
+
+int Vid::getFPS( )
+{
+   return video_cap.get( cv::CAP_PROP_FPS );
+}
+
+int Vid::getNumFrames( )
+{
+   return video_cap.get( cv::CAP_PROP_FRAME_COUNT );
+}
+
+QSize Vid::getQSize( )
+{
+   cv::Mat image;
+   getCurrentFrame( image );
+   return QSize( image.cols, image.rows );
+}
+
+cv::Size Vid::getCSize( )
+{
+   cv::Mat image;
+   getCurrentFrame( image );
+   return cv::Size( image.cols, image.rows );
 }
