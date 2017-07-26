@@ -403,6 +403,7 @@
                 Excludes=""/>
             <F N="exportgroup.cpp"/>
             <F N="interpolate.cpp"/>
+            <F N="interpolatecontrolgroup.cpp"/>
             <F N="main.cpp"/>
             <F N="main_test.cpp"/>
             <F N="../fizix/mainwindow.cpp"/>
@@ -451,6 +452,7 @@
             <F N="exportgroup.h"/>
             <F N="inputparser.h"/>
             <F N="interpolate.h"/>
+            <F N="interpolatecontrolgroup.h"/>
             <F N="../fizix/mainwindow.h"/>
             <F N="rasterwindow.h"/>
             <F N="roll_time_group.h"/>

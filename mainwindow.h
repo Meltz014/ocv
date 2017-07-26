@@ -5,6 +5,7 @@
 #include "rollingshutter.h"
 #include "vid.h"
 #include "roll_time_group.h"
+#include "interpolatecontrolgroup.h"
 #include "exportgroup.h"
 
 class QLabel;
@@ -32,6 +33,7 @@ class MainWindow : public QWidget
    void loadVid( QString file_name );
 
    RollTimeGroup *slider;
+   InterpolateGroup *interpolate_control;
    ExportGroup *exportgroup;
    QLabel *current_frame_display;
    QLabel *generated_img_display;

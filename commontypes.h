@@ -18,6 +18,7 @@
 #include <QComboBox>
 #include <QGroupBox>
 #include <QApplication>
+#include <QCheckBox>
 
 
 #include <opencv2/opencv.hpp>

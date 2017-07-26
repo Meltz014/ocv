@@ -13,6 +13,8 @@ MainWindow::MainWindow( )
    video_obj = Vid( );
    roll_time = 1.0f;
 
+   interpolate_control = new InterpolateGroup( "Frame Interpolation" );
+
    slider = new RollTimeGroup("Set Roll Time", this);
    slider->setMinimum( 1 );
    slider->setMaximum( 10 );
@@ -38,8 +40,9 @@ MainWindow::MainWindow( )
    QGridLayout *mainLayout = new QGridLayout;
    mainLayout->setColumnStretch( 0, 1 );
 
-   mainLayout->addWidget( slider, 0, 0, 1, 1 );
-   mainLayout->addWidget( exportgroup, 1, 0, 1, 1 );
+   mainLayout->addWidget( interpolate_control, 0, 0, 1, 1 );
+   mainLayout->addWidget( slider, 1, 0, 1, 1 );
+   mainLayout->addWidget( exportgroup, 2, 0, 1, 1 );
    mainLayout->addWidget( current_frame_display, 0, 1, 1, 1 );
    mainLayout->addWidget( generated_img_display, 0, 2, 1, 1 );
    mainLayout->addWidget( file_button, 1, 1, 1, 1 );
