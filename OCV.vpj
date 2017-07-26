@@ -126,14 +126,14 @@
                 RunFromDir="%rp"
                 CaptureOutputWith="ProcessBuffer"
                 SaveOption="SaveWorkspaceFiles">
-                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30"/>
+                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30 -i 1"/>
             </Target>
             <Target
                 Name="Execute OCV no capture"
                 MenuCaption="&amp;Execute OCV no capture"
                 RunFromDir="%rp"
                 SaveOption="SaveWorkspaceFiles">
-                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30"/>
+                <Exec CmdLine='release\ocv.exe -v "C:\Users\501219\Videos\VID_20170707_152237.mp4" -s 15 -e 50 -i 3'/>
             </Target>
             <Target
                 Name="Build test"

@@ -49,28 +49,34 @@ int main(int argc, char **argv)
       qDebug( ) << "inter_frames" << inter_frames;
    }
 
-   Vid video_obj( QString::fromStdString( input_video ) );
+   Vid video_obj = Vid( QString::fromStdString( input_video ) );
+   video_obj.setCurrentFrameIndex( start_frame );
 
    cv::VideoWriter out_vid;
-   out_vid.open( "C:/cygwin/home/501219/OCV/out.avi", -1, video_obj.getFPS( ), video_obj.getCSize( ), true );
+   out_vid.open( "C:/cygwin/home/501219/OCV/out.avi", CV_FOURCC('M','J','P','G'), video_obj.getFPS( ) * ( inter_frames + 1 ), video_obj.getCSize( ), true );
+   char output_name[ 50 ];
 
-   for (int i = start_frame; i < end_frame; i++)
+   for ( int i = start_frame; i < end_frame; i++ )
    {
-      video_cap.set( cv::CAP_PROP_POS_FRAMES, i );
-      if ( video_cap.read( from ) && video_cap.read( to ) )
+      if ( video_obj.getCurrentFrame( from ) && video_obj.getNextFrame( to ) )
       {
+         sprintf( output_name, "C:/cygwin/home/501219/OCV/images/frame%d.jpg", i );
+         imwrite( output_name, from );
          out_vid << from;
          Interpolater interp( from, to, inter_frames );
-         for ( int j=0; j<inter_frames; j++ )
+         for ( int j=0; j < inter_frames; j++ )
          {
             qDebug( ) << "frame " << i << "." << j;
             interp.getNextFrame( interp_frame );
+            cv::cvtColor( interp_frame, interp_frame, CV_RGB2BGR );
             out_vid << interp_frame;
+            sprintf( output_name, "C:/cygwin/home/501219/OCV/images/frame%d.%d.jpg", i, j );
+            imwrite( output_name, interp_frame );
          }
       }
    }
    out_vid << to;
-   
+
    return 0;
 }
 

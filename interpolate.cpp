@@ -30,10 +30,14 @@ void Interpolater::getNextFrame( cv::OutputArray interpolatedFrame )
    cv::Vec3b pt_1;
 
    double current_ti = this->ti * ( ++this->current_frame );
+   qDebug(  ) << "current_ti" << current_ti;
+   double flow_x;
+   double flow_y;
    int r_fw_new = 0;
    int c_fw_new = 0;
    int r_bw_new = 0;
    int c_bw_new = 0;
+
 
    int rows = this->from.rows;
    int cols = this->from.cols;
@@ -48,12 +52,23 @@ void Interpolater::getNextFrame( cv::OutputArray interpolatedFrame )
       for ( int c = 0; c < cols; ++c )
       {
          // forward interpolation
-         c_fw_new = c + ( int )round( ( 1.0 - current_ti ) * this->flowxy[ 0 ].at<float>( r, c ) );
-         r_fw_new = r + ( int )round( ( 1.0 - current_ti ) * this->flowxy[ 1 ].at<float>( r, c ) );
+         flow_x = this->flowxy[ 0 ].at<float>( r, c );
+         if ( std::isnan( flow_x ) )
+         {
+            flow_x = 0.0f;
+         }
+         flow_y = this->flowxy[ 1 ].at<float>( r, c );
+         if ( std::isnan( flow_y ) )
+         {
+            flow_y = 0.0f;
+         }
+
+         c_fw_new = c + ( int )round( ( 1.0f - current_ti ) * flow_x );
+         r_fw_new = r + ( int )round( ( 1.0f - current_ti ) * flow_y );
 
          // reverse interpolation
-         c_bw_new = c - ( int )round( current_ti * this->flowxy[ 0 ].at<float>( r, c ) );
-         r_bw_new = r - ( int )round( current_ti * this->flowxy[ 1 ].at<float>( r, c ) );
+         c_bw_new = c - ( int )round( current_ti * flow_x );
+         r_bw_new = r - ( int )round( current_ti * flow_y );
 
          // limit checks
          c_fw_new = std::min( std::max( c_fw_new, 0 ), cols - 1 );
@@ -63,12 +78,12 @@ void Interpolater::getNextFrame( cv::OutputArray interpolatedFrame )
 
          // copy value from new pixel index to pt_0 and pt_1
          pt_0 = this->from.at<cv::Vec3b>( r_bw_new, c_bw_new );
-         pt_1 = this->from.at<cv::Vec3b>( r_fw_new, c_fw_new );
+         pt_1 = this->to.at<cv::Vec3b>( r_fw_new, c_fw_new );
 
          // fade between fw and bw interpolations and copy to new mat
          for ( int chan=0; chan < channels; chan++ )
          {
-            row_ptr[ c*channels + chan ] = ( uchar )round( ( 1.0 - current_ti ) * pt_0[ chan ] + current_ti * pt_1[ chan ] );
+            row_ptr[ c*channels + chan ] = ( uchar )round( ( 1.0f - current_ti ) * pt_0[ chan ] + current_ti * pt_1[ chan ] );
          }
       }
    }

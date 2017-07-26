@@ -163,6 +163,11 @@ bool Vid::getPrevFrame( cv::OutputArray image )
    return false;
 }
 
+void Vid::setCurrentFrameIndex( uint32 frame_num )
+{
+   current_frame = std::min( frame_num, (uint32) num_frames );
+}
+
 int Vid::getFPS( )
 {
    return video_cap.get( cv::CAP_PROP_FPS );

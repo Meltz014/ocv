@@ -26,8 +26,8 @@ QT += gui
 QT += core
 QT += widgets
 
-HEADERS += commontypes.h interpolate.h inputparser.h
-SOURCES += main_test.cpp interpolate.cpp
+HEADERS += commontypes.h interpolate.h inputparser.h vid.h
+SOURCES += main_test.cpp interpolate.cpp vid.cpp
 
 TARGET = ocv
 INSTALLS += target
