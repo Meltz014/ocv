@@ -126,14 +126,14 @@
                 RunFromDir="%rp"
                 CaptureOutputWith="ProcessBuffer"
                 SaveOption="SaveWorkspaceFiles">
-                <Exec CmdLine="release\ocv.exe -v C:\Users\501219\Videos\VID_20170707_152237.mp4 -s 15 -e 30 -i 1"/>
+                <Exec CmdLine="release\ocv.exe"/>
             </Target>
             <Target
                 Name="Execute OCV no capture"
                 MenuCaption="&amp;Execute OCV no capture"
                 RunFromDir="%rp"
                 SaveOption="SaveWorkspaceFiles">
-                <Exec CmdLine='release\ocv.exe -v "C:\Users\501219\Videos\VID_20170707_152237.mp4" -s 15 -e 50 -i 3'/>
+                <Exec CmdLine="release\ocv.exe"/>
             </Target>
             <Target
                 Name="Build test"
@@ -153,6 +153,13 @@
                 SaveOption="SaveNone"
                 RunFromDir="%rp">
                 <Exec CmdLine="exec.bat"/>
+            </Target>
+            <Target
+                Name="Execute upsample"
+                MenuCaption="&amp;Execute upsample no capture"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine='release\upsampvid.exe -i "C:\Users\501219\Videos\VID_20170708_104315.mp4" -o "C:\Users\501219\Videos\out.avi" -s 15 -e 50 -i 3 -x 50 -f D'/>
             </Target>
         </Menu>
         <Includes>
@@ -252,6 +259,13 @@
                 SaveOption="SaveNone">
                 <Exec CmdLine="exec.bat"/>
             </Target>
+            <Target
+                Name="Execute upsample"
+                MenuCaption="&amp;Execute upsample"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine='release\upsampvid.exe -v "C:\Users\501219\Videos\VID_20170707_152237.mp4" -s 15 -e 50 -i 3'/>
+            </Target>
         </Menu>
     </Config>
     <Config
@@ -338,6 +352,13 @@
                 CaptureOutputWith="ProcessBuffer"
                 SaveOption="SaveNone">
                 <Exec CmdLine="exec.bat"/>
+            </Target>
+            <Target
+                Name="Execute upsample"
+                MenuCaption="&amp;Execute upsample"
+                RunFromDir="%rp"
+                SaveOption="SaveWorkspaceFiles">
+                <Exec CmdLine='release\upsampvid.exe -v "C:\Users\501219\Videos\VID_20170707_152237.mp4" -s 15 -e 50 -i 3'/>
             </Target>
         </Menu>
     </Config>

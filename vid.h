@@ -15,6 +15,7 @@ class Vid
    void setCurrentFrameIndex( uint32 frame_num );
    int  getNumFrames( );
    int  getFPS( );
+   int  getCodec( );
    QSize getQSize( );
    cv::Size getCSize( );
    void scaleDown( );

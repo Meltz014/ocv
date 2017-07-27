@@ -12,8 +12,10 @@ MainWindow::MainWindow( )
 
    video_obj = Vid( );
    roll_time = 1.0f;
+   interpolated_frames = 0;
 
    interpolate_control = new InterpolateGroup( "Frame Interpolation" );
+   connect(interpolate_control, SIGNAL(valueChanged(int)), this, SLOT(updateInterpolatedFrames( int )));
 
    slider = new RollTimeGroup("Set Roll Time", this);
    slider->setMinimum( 1 );
@@ -43,10 +45,10 @@ MainWindow::MainWindow( )
    mainLayout->addWidget( interpolate_control, 0, 0, 1, 1 );
    mainLayout->addWidget( slider, 1, 0, 1, 1 );
    mainLayout->addWidget( exportgroup, 2, 0, 1, 1 );
-   mainLayout->addWidget( current_frame_display, 0, 1, 1, 1 );
-   mainLayout->addWidget( generated_img_display, 0, 2, 1, 1 );
-   mainLayout->addWidget( file_button, 1, 1, 1, 1 );
-   mainLayout->addWidget( generate_button, 1, 2, 1, 1 );
+   mainLayout->addWidget( current_frame_display, 0, 1, 2, 1 );
+   mainLayout->addWidget( generated_img_display, 0, 2, 2, 1 );
+   mainLayout->addWidget( file_button, 2, 1, 1, 1 );
+   mainLayout->addWidget( generate_button, 2, 2, 1, 1 );
    setLayout( mainLayout );
 
    setWindowTitle( tr( "The Window" ) );
@@ -64,7 +66,7 @@ void MainWindow::generateEffectCallback( )
    RollingShutter *generator = new RollingShutter( &video_obj );
    connect( generator, SIGNAL( rowProcessed( ) ), this, SLOT( effectRowProcessed( ) ) );
    generator->setRollTime( roll_time );
-   generator->generateEffect( generated_img );
+   generator->generateEffect( generated_img, interpolated_frames );
    video_obj.getCurrentFrame( disp_img );
    updateGui( );
 }
@@ -204,6 +206,11 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
    }
 }
 
+void MainWindow::updateInterpolatedFrames( int value )
+{
+   interpolated_frames = value;
+}
+
 void MainWindow::updateRollTime( int value )
 {
    roll_time = (double)value;
@@ -215,35 +222,33 @@ void MainWindow::exportFrame( export_options option )
    Mat out_img;
    Mat disp2;
    Mat flow;
-   qDebug( ) << "export type" << option;
-   switch ( option )
-   {
-      case SOURCE_FRAME:
-         if ( !disp_img.empty( ) )
-         {
-            cv::cvtColor( disp_img, out_img, CV_RGB2BGR );
-            cv::imwrite( "C:/cygwin/home/501219/OCV/out0.jpg", out_img );
-            
-            video_obj.getNextFrame( disp2 );
-            cv::cvtColor( disp2, out_img, CV_RGB2BGR );
-            cv::imwrite( "C:/cygwin/home/501219/OCV/out2.jpg", out_img );
 
-            //interpolate
-            interpolateFrames( disp_img, disp2, out_img );
-            cv::cvtColor( out_img, out_img, CV_RGB2BGR );
-            cv::imwrite( "C:/cygwin/home/501219/OCV/out1.jpg", out_img );
-            qDebug( ) << "img exported";
-         }
-         break;
-      case OUT_FRAME:
-         if ( !generated_img.empty( ) )
-         {
-            cv::cvtColor( generated_img, out_img, CV_RGB2BGR );
-            cv::imwrite( "C:/cygwin/home/501219/OCV/out.jpg", out_img );
-            qDebug( ) << "img exported";
-         }
-         break;
-      default:
-         qDebug( ) << "invalid";
+   QString file_name = QFileDialog::getSaveFileName( this,
+                                                     tr("Save Image File"),
+                                                     "",
+                                                     tr("All Files (*.jpg)"));
+   if ( !file_name.isEmpty( ) )
+   {
+      switch ( option )
+      {
+         case SOURCE_FRAME:
+            if ( !disp_img.empty( ) )
+            {
+               cv::cvtColor( disp_img, out_img, CV_RGB2BGR );
+               cv::imwrite( file_name.toStdString( ), out_img );
+               qDebug( ) << "img exported";
+            }
+            break;
+         case OUT_FRAME:
+            if ( !generated_img.empty( ) )
+            {
+               cv::cvtColor( generated_img, out_img, CV_RGB2BGR );
+               cv::imwrite( file_name.toStdString( ), out_img );
+               qDebug( ) << "img exported";
+            }
+            break;
+         default:
+            qDebug( ) << "invalid";
+      }
    }
 }

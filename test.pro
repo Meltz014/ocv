@@ -29,6 +29,6 @@ QT += widgets
 HEADERS += commontypes.h interpolate.h inputparser.h vid.h
 SOURCES += main_test.cpp interpolate.cpp vid.cpp
 
-TARGET = ocv
+TARGET = upsampvid
 INSTALLS += target
 

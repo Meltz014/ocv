@@ -23,6 +23,7 @@ class MainWindow : public QWidget
    void generateEffectCallback( );
    void updateRollTime( int value );
    void exportFrame( export_options option );
+   void updateInterpolatedFrames( int value );
 
  protected:
   void resizeEvent( QResizeEvent *event ) override;
@@ -43,6 +44,7 @@ class MainWindow : public QWidget
    cv::Mat disp_img;
    cv::Mat generated_img;
    Vid video_obj;
+   int interpolated_frames;
    double roll_time;
 };
 

@@ -116,6 +116,11 @@ bool Vid::getCurrentFrame( cv::OutputArray image )
    return stat;
 }
 
+int Vid::getCodec(  )
+{
+   return static_cast<int>(video_cap.get(cv::CAP_PROP_FOURCC));
+}
+
 /**
  * Loads next frame into image
  * 

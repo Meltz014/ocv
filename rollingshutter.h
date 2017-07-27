@@ -3,6 +3,7 @@
 
 #include "commontypes.h"
 #include "vid.h"
+#include "interpolate.h"
 
 // seconds
 #define DEFAULT_ROLL_TIME ( 1.0f )
@@ -13,7 +14,7 @@ class RollingShutter : public QObject
 
  public:
    RollingShutter( Vid * video );
-   void generateEffect( cv::OutputArray generated_img );
+   void generateEffect( cv::OutputArray generated_img, int interpolated_frames );
    void setRollTime( double time );
 
  signals:

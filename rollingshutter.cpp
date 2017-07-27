@@ -6,12 +6,15 @@ RollingShutter::RollingShutter( Vid * video )
    roll_time = DEFAULT_ROLL_TIME;
 }
 
-void RollingShutter::generateEffect( cv::OutputArray generated_img )
+void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpolated_frames )
 {
    cv::Mat frame = cv::Mat( );
    cv::Mat last_frame = cv::Mat( );
+   cv::Mat next_frame = cv::Mat( );
+   cv::Mat interp_frame = cv::Mat( );
    cv::Mat slice;
    cv::Mat out_frame;
+   int status;
    int num_frames;
    int pixels_per_frame;
    int start_idx = 0;
@@ -26,21 +29,55 @@ void RollingShutter::generateEffect( cv::OutputArray generated_img )
    num_frames = ( int )( video->getFPS( ) * roll_time );
    qDebug( ) << "Num frames " << num_frames;
    qDebug( ) << "max_dim " << max_dim;
-   pixels_per_frame = ( int )( (double)max_dim / num_frames );
+   pixels_per_frame = ( int )std::max(( (double)max_dim / ( num_frames * ( interpolated_frames + 1 ) ) ), 1);
    qDebug( ) << "pixels_per_frame " << pixels_per_frame;
 
    for( int i = 0; i < num_frames; i++ )
    {
-      if( video->getNextFrame( frame ) )
+      if( interpolated_frames > 0 )
       {
-         start_idx = i * pixels_per_frame;
-         end_idx = ( i + 1 ) * pixels_per_frame;
+         status = video->getCurrentFrame( frame ) && video->getNextFrame( next_frame );
+      }
+      else
+      {
+         status = video->getNextFrame( frame );
+      }
+      if( status )
+      {
+         // always get a slice from the real frame
+         start_idx = i * ( interpolated_frames + 1 ) * pixels_per_frame;
+         end_idx = ( i * ( interpolated_frames + 1 ) + 1 ) * pixels_per_frame;
          if( end_idx >= max_dim )
          {
             end_idx = max_dim - 1;
          }
          slice = frame.rowRange( start_idx, end_idx );
          out_frame.push_back( slice );
+         emit rowProcessed( );
+
+         if( interpolated_frames > 0 )
+         {
+            // interpolate between current frame and next frame
+            Interpolater interpolater( frame, next_frame, interpolated_frames );
+            for( int inter_frame_idx = 0; inter_frame_idx < interpolated_frames; inter_frame_idx++ )
+            {
+               start_idx = ( i * ( interpolated_frames + 1 ) + inter_frame_idx + 1 ) * pixels_per_frame;
+               end_idx = ( i * ( interpolated_frames + 1 ) + inter_frame_idx + 2 ) * pixels_per_frame;
+               if( end_idx >= max_dim )
+               {
+                  end_idx = max_dim - 1;
+               }
+               if( start_idx >= max_dim )
+               {
+                  start_idx = max_dim - 1;
+               }
+
+               interpolater.getNextFrame( interp_frame );
+               slice = interp_frame.rowRange( start_idx, end_idx );
+               out_frame.push_back( slice );
+               emit rowProcessed( );
+            }
+         }
          //qDebug( ) << "out_frame rows" << out_frame.rows;
          last_frame = frame;
       }
@@ -49,8 +86,8 @@ void RollingShutter::generateEffect( cv::OutputArray generated_img )
          //qDebug() <<  "Error reading frame!";
          slice = last_frame.rowRange( start_idx, end_idx );
          out_frame.push_back( slice );
+         emit rowProcessed( );
       }
-      emit rowProcessed( );
    }
 }
 
