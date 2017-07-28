@@ -6,6 +6,14 @@ RollingShutter::RollingShutter( Vid * video )
    roll_time = DEFAULT_ROLL_TIME;
 }
 
+/**
+ * Generates a rolling shutter effect
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param generated_img output image
+ * @param interpolated_frames number of frames to interpolate
+ */
 void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpolated_frames )
 {
    cv::Mat frame = cv::Mat( );
@@ -91,48 +99,14 @@ void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpol
    }
 }
 
+/**
+ * Update the roll time in seconds for rolling shutter effect
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param time 
+ */
 void RollingShutter::setRollTime( double time )
 {
    this->roll_time = time;
-}
-
-
-void interpolateFrames( cv::InputArray from, cv::InputArray to, cv::OutputArray out_img )
-{
-   // Wrapper for calcOpticalFlowSF
-   cv::Mat flow;
-   cv::Mat out_mat;
-   cv::Mat dest;
-
-   cv::Mat fwrd[ 2 ];
-   cv::Mat bwrd[ 2 ];
-   cv::Mat buf;
-
-   //// clear output array and get Mat
-   //out_img.create( from.size( ), out_img.type( ) );
-   //out_mat = out_img.getMat( );
-   //out_mat.pop_back( out_mat.rows );
-
-   // calculate forward flow
-   cv::optflow::calcOpticalFlowSF( from, to,
-                                   flow,
-                                   3, 2, 4);//, 4.1, 25.5, 18, 55.0, 25.5, 0.35, 18, 55.0, 25.5, 10 );
-   cv::split( flow, fwrd );
-
-   // calculate backwards flow
-   cv::optflow::calcOpticalFlowSF( to, from,
-                                   flow,
-                                   3, 2, 4);//, 4.1, 25.5, 18, 55.0, 25.5, 0.35, 18, 55.0, 25.5, 10 );
-   cv::split( flow, bwrd );
-
-
-   cv::FileStorage fw( "fw.txt", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_JSON );
-   cv::FileStorage bw( "bw.txt", cv::FileStorage::WRITE | cv::FileStorage::FORMAT_JSON );
-   fw << "fwx" << fwrd[ 0 ];
-   fw << "fwy" << fwrd[ 1 ];
-   bw << "bwx" << bwrd[ 0 ];
-   bw << "bwy" << bwrd[ 1 ];
-   fw.release( );
-   bw.release( );
-
 }

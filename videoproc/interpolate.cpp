@@ -1,5 +1,16 @@
 #include "interpolate.h"
 
+/**
+ * Class to handle frame interpolation
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param from beginning frame for interpolation
+ * @param to ending frame for interpolation (should be 
+ *           immediately following the "from" frame)
+ * @param N Number of interpolated frames to generate
+ * @param f_type Type of flow to use
+ */
 Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flow_type f_type )
 {
    this->from = from.getMat( );
@@ -42,6 +53,13 @@ Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flo
    cv::split( flow, this->flowxy );
 }
 
+/**
+ * Get the next interpolated frame
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param interpolatedFrame 
+ */
 void Interpolater::getNextFrame( cv::OutputArray interpolatedFrame )
 {
    double current_ti = this->ti * ( ++this->current_frame );

@@ -25,6 +25,4 @@ class RollingShutter : public QObject
    double roll_time;
 };
 
-void interpolateFrames( cv::InputArray from, cv::InputArray to, cv::OutputArray out_img );
-
 #endif // ROLLSHUT_H

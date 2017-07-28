@@ -71,6 +71,12 @@ void MainWindow::generateEffectCallback( )
    updateGui( );
 }
 
+/**
+ * Callback for when a row has been processed in the effects 
+ * image 
+ * 
+ * @author David Melton (7/28/2017)
+ */
 void MainWindow::effectRowProcessed( )
 {
    video_obj.getCurrentFrame( disp_img );
@@ -78,6 +84,12 @@ void MainWindow::effectRowProcessed( )
    qApp->processEvents( );
 }
 
+
+/**
+ * callback for Load File button
+ * 
+ * @author David Melton (7/28/2017)
+ */
 void MainWindow::loadFileButtonCallback( )
 {
    QString file_name = QFileDialog::getOpenFileName( this,
@@ -206,17 +218,39 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
    }
 }
 
+/**
+ * function to set the nuber of in-between frames to use 
+ * for interpolation 
+ *  
+ * @author David Melton (7/28/2017)
+ * 
+ * @param value number of in-between frames to generate
+ */
 void MainWindow::updateInterpolatedFrames( int value )
 {
    interpolated_frames = value;
 }
 
+/**
+ * Callback for setting the shutter effect roll time
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param value shutter roll time in seconds
+ */
 void MainWindow::updateRollTime( int value )
 {
    roll_time = (double)value;
    qDebug( ) << value;
 }
 
+/**
+ * Saves a frame as an image
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param option which frame to save
+ */
 void MainWindow::exportFrame( export_options option )
 {
    Mat out_img;

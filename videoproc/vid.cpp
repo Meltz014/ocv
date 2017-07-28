@@ -117,6 +117,13 @@ bool Vid::getCurrentFrame( cv::OutputArray image )
 }
 
 
+/**
+ * Get the integer value of the FOURCC code
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @return int 
+ */
 int Vid::getCodec(  )
 {
    return static_cast<int>(video_cap.get(cv::CAP_PROP_FOURCC));
@@ -169,21 +176,49 @@ bool Vid::getPrevFrame( cv::OutputArray image )
    return false;
 }
 
+/**
+ * Set the current frame index of the video
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @param frame_num 
+ */
 void Vid::setCurrentFrameIndex( uint32 frame_num )
 {
    current_frame = std::min( frame_num, (uint32) num_frames );
 }
 
+/**
+ * Get the frames per second of the video
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @return int 
+ */
 int Vid::getFPS( )
 {
    return video_cap.get( cv::CAP_PROP_FPS );
 }
 
+/**
+ * Get total number of frames for the video
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @return int 
+ */
 int Vid::getNumFrames( )
 {
    return video_cap.get( cv::CAP_PROP_FRAME_COUNT );
 }
 
+/**
+ * get size of video as a QSize() instance
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @return QSize 
+ */
 QSize Vid::getQSize( )
 {
    cv::Mat image;
@@ -191,6 +226,13 @@ QSize Vid::getQSize( )
    return QSize( image.cols, image.rows );
 }
 
+/**
+ * get size of the video as cv::Size() instance
+ * 
+ * @author David Melton (7/28/2017)
+ * 
+ * @return cv::Size 
+ */
 cv::Size Vid::getCSize( )
 {
    cv::Mat image;

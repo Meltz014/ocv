@@ -26,18 +26,18 @@ QT += gui
 QT += core
 QT += widgets
 
-HEADERS += commontypes.h interpolate.h \
-           mainwindow.h \
-           vid.h \
-           rollingshutter.h \
+HEADERS += commontypes.h mainwindow.h \
+           videoproc\interpolate.h \
+           videoproc\vid.h \
+           videoproc\rollingshutter.h \
            guicontrols\roll_time_group.h \
            guicontrols\exportgroup.h \
            guicontrols\interpolatecontrolgroup.h
 
-SOURCES += main.cpp interpolate.cpp \
-           mainwindow.cpp \
-           vid.cpp \
-           rollingshutter.cpp \
+SOURCES += main.cpp mainwindow.cpp \
+           videoproc\interpolate.cpp \
+           videoproc\vid.cpp \
+           videoproc\rollingshutter.cpp \
            guicontrols\roll_time_group.cpp \
            guicontrols\exportgroup.cpp \
            guicontrols\interpolatecontrolgroup.cpp
