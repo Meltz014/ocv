@@ -5,8 +5,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
-#include "interpolate.h"
-#include "vid.h"
+#include "videoproc\interpolate.h"
+#include "videoproc\vid.h"
 #include "inputparser.h"
 #include <QDebug>
 

@@ -26,8 +26,21 @@ QT += gui
 QT += core
 QT += widgets
 
-HEADERS += commontypes.h interpolate.h mainwindow.h vid.h rollingshutter.h roll_time_group.h exportgroup.h interpolatecontrolgroup.h
-SOURCES += main.cpp interpolate.cpp mainwindow.cpp vid.cpp rollingshutter.cpp roll_time_group.cpp exportgroup.cpp interpolatecontrolgroup.cpp
+HEADERS += commontypes.h interpolate.h \
+           mainwindow.h \
+           vid.h \
+           rollingshutter.h \
+           guicontrols\roll_time_group.h \
+           guicontrols\exportgroup.h \
+           guicontrols\interpolatecontrolgroup.h
+
+SOURCES += main.cpp interpolate.cpp \
+           mainwindow.cpp \
+           vid.cpp \
+           rollingshutter.cpp \
+           guicontrols\roll_time_group.cpp \
+           guicontrols\exportgroup.cpp \
+           guicontrols\interpolatecontrolgroup.cpp
 
 TARGET = ocv
 INSTALLS += target

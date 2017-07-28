@@ -1,7 +1,7 @@
 #ifndef INTERPOLATE_H
 #define INTERPOLATE_H
 
-#include "commontypes.h"
+#include "..\commontypes.h"
 
 typedef enum
 {

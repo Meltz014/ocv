@@ -2,11 +2,11 @@
 #define MAINWINDOW_H
 
 #include "commontypes.h"
-#include "rollingshutter.h"
-#include "vid.h"
-#include "roll_time_group.h"
-#include "interpolatecontrolgroup.h"
-#include "exportgroup.h"
+#include "videoproc\rollingshutter.h"
+#include "videoproc\vid.h"
+#include "guicontrols\roll_time_group.h"
+#include "guicontrols\interpolatecontrolgroup.h"
+#include "guicontrols\exportgroup.h"
 
 class QLabel;
 

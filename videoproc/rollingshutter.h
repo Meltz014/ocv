@@ -1,9 +1,9 @@
 #ifndef ROLLSHUT_H
 #define ROLLSHUT_H
 
-#include "commontypes.h"
-#include "vid.h"
-#include "interpolate.h"
+#include "..\commontypes.h"
+#include "..\videoproc\vid.h"
+#include "..\videoproc\interpolate.h"
 
 // seconds
 #define DEFAULT_ROLL_TIME ( 1.0f )

@@ -1,7 +1,7 @@
 #ifndef EXPORTGROUP_H
 #define EXPORTGROUP_H
 
-#include "commontypes.h"
+#include "..\commontypes.h"
 
 enum export_options {
     SOURCE_FRAME,

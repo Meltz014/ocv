@@ -1,7 +1,7 @@
 #ifndef VID_H
 #define VID_H
 
-#include "commontypes.h"
+#include "..\commontypes.h"
 
 class Vid
 {

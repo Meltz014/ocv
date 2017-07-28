@@ -1,7 +1,7 @@
 #ifndef ROLLTIME_H
 #define ROLLTIME_H
 
-#include "commontypes.h"
+#include "..\commontypes.h"
 
 class RollTimeGroup : public QGroupBox
 {

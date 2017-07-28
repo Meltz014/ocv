@@ -1,7 +1,7 @@
 #ifndef INTERPCONTROL_H
 #define INTERPCONTROL_H
 
-#include "commontypes.h"
+#include "..\commontypes.h"
 
 class InterpolateGroup : public QGroupBox
 {
