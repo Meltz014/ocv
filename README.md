@@ -29,6 +29,11 @@ There are two programs that can be built here:
 animation sped up 6x.  3 intermediary frames using Simple Flow algorithmn.
 ![](http://i.imgur.com/YaJ94z1.gif)
 
+### Using upsampvid.exe to upsample a video
+Deep flow method with 3 inbetween frames (link to video)
+
+[![Deep Flow Sample](http://img.youtube.com/vi/6Jkmhl5XrmY/0.jpg)](http://www.youtube.com/watch?v=6Jkmhl5XrmY)
+
 ## Motivation
 
 This project was started to gain experience with Qt and OpenCV frameworks.
