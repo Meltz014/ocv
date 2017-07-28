@@ -22,12 +22,12 @@ There are two programs that can be built here:
 
 ### Rolling Shutter effect without interpolation
 
-![](http://i.imgur.com/c5ElxgQ.gifv)
+![](http://i.imgur.com/c5ElxgQ.gif)
 
 ### Rolling Shutter effect with interpolation
 
 animation sped up 6x.  3 intermediary frames using Simple Flow algorithmn.
-![](http://i.imgur.com/YaJ94z1.gifv)
+![](http://i.imgur.com/YaJ94z1.gif)
 
 ## Motivation
 
