@@ -29,7 +29,7 @@ void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpol
    num_frames = ( int )( video->getFPS( ) * roll_time );
    qDebug( ) << "Num frames " << num_frames;
    qDebug( ) << "max_dim " << max_dim;
-   pixels_per_frame = ( int )std::max(( (double)max_dim / ( num_frames * ( interpolated_frames + 1 ) ) ), 1);
+   pixels_per_frame = ( int )std::max( (double)max_dim / ( num_frames * ( interpolated_frames + 1 ) ), 1.0 );
    qDebug( ) << "pixels_per_frame " << pixels_per_frame;
 
    for( int i = 0; i < num_frames; i++ )
