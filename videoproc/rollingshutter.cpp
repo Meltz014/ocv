@@ -14,7 +14,7 @@ RollingShutter::RollingShutter( Vid * video )
  * @param generated_img output image
  * @param interpolated_frames number of frames to interpolate
  */
-void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpolated_frames )
+void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpolated_frames, SettingsData *interpolate_settings )
 {
    cv::Mat frame = cv::Mat( );
    cv::Mat last_frame = cv::Mat( );
@@ -66,7 +66,7 @@ void RollingShutter::generateEffect( cv::OutputArray generated_img, int interpol
          if( interpolated_frames > 0 )
          {
             // interpolate between current frame and next frame
-            Interpolater interpolater( frame, next_frame, interpolated_frames );
+            Interpolater interpolater( frame, next_frame, interpolated_frames, interpolate_settings );
             for( int inter_frame_idx = 0; inter_frame_idx < interpolated_frames; inter_frame_idx++ )
             {
                start_idx = ( i * ( interpolated_frames + 1 ) + inter_frame_idx + 1 ) * pixels_per_frame;

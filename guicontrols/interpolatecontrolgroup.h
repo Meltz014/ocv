@@ -1,6 +1,7 @@
 #ifndef INTERPCONTROL_H
 #define INTERPCONTROL_H
 
+#include "settings\settingswindow.h"
 #include "..\commontypes.h"
 
 class InterpolateGroup : public QGroupBox
@@ -12,15 +13,18 @@ class InterpolateGroup : public QGroupBox
 
  signals:
    void valueChanged( int value );
+   void settingsSaved( SettingsData *new_settings );
 
  private slots:
    void changeText( int value );
    void enableDisable( int new_state );
+   void buttonCallback( );
 
  private:
    QCheckBox *checkbox;
    QSlider *slider;
    QLabel *label;
+   QPushButton *button;
    int stored_value;
 };
 

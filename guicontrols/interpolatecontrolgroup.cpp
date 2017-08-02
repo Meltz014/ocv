@@ -5,7 +5,6 @@
 InterpolateGroup::InterpolateGroup( const QString &title, QWidget *parent )
    : QGroupBox( title, parent )
 {
-
    checkbox = new QCheckBox( "Interpolate Frames" );
    checkbox->setFocusPolicy( Qt::NoFocus );
 
@@ -20,16 +19,27 @@ InterpolateGroup::InterpolateGroup( const QString &title, QWidget *parent )
    slider->setEnabled( false );
 
    label = new QLabel( "Interpolated Frames: 0" );
+   button = new QPushButton( "Settings" );
+   button->setFocusPolicy( Qt::NoFocus );
 
-   connect(slider, SIGNAL(valueChanged(int)), this, SIGNAL(valueChanged(int)));
-   connect(slider, SIGNAL(valueChanged(int)), this, SLOT(changeText(int)));
-   connect(checkbox, SIGNAL(stateChanged(int)), this, SLOT(enableDisable(int)));
+   connect( slider, SIGNAL( valueChanged( int ) ), this, SIGNAL( valueChanged( int ) ) );
+   connect( slider, SIGNAL( valueChanged( int ) ), this, SLOT( changeText( int ) ) );
+   connect( checkbox, SIGNAL( stateChanged( int ) ), this, SLOT( enableDisable( int ) ) );
+   connect( button, SIGNAL( clicked( ) ), this, SLOT( buttonCallback( ) ) );
 
    QBoxLayout *slidersLayout = new QBoxLayout( QBoxLayout::TopToBottom );
    slidersLayout->addWidget(checkbox);
    slidersLayout->addWidget(slider);
    slidersLayout->addWidget(label);
+   slidersLayout->addWidget(button);
    setLayout(slidersLayout);
+}
+
+void InterpolateGroup::buttonCallback( )
+{
+   SettingsWindow *settings_window = new SettingsWindow( );
+   connect( settings_window, SIGNAL( settingsSaved( SettingsData * ) ), this, SIGNAL( settingsSaved( SettingsData * ) ) );
+   settings_window->show( );
 }
 
 void InterpolateGroup::enableDisable( int new_state )

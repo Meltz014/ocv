@@ -14,7 +14,7 @@ class RollingShutter : public QObject
 
  public:
    RollingShutter( Vid * video );
-   void generateEffect( cv::OutputArray generated_img, int interpolated_frames );
+   void generateEffect( cv::OutputArray generated_img, int interpolated_frames, SettingsData *interpolate_settings );
    void setRollTime( double time );
 
  signals:

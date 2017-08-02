@@ -373,10 +373,24 @@
     <Files>
         <Folder
             Name="Source Files"
-            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d;*.m;*.mm;*.go"></Folder>
+            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d;*.m;*.mm;*.go">
+            <F N="guicontrols/settings/settingsdata.cpp"/>
+            <F N="guicontrols/settings/settingspane.cpp"/>
+            <F N="guicontrols/settingswindow.cpp"/>
+            <F N="guicontrols/settings/settingswindow.cpp"/>
+            <F N="guicontrols/settings/simpleflowpane.cpp"/>
+            <F N="guicontrols/settings/textsetting.cpp"/>
+        </Folder>
         <Folder
             Name="Header Files"
-            Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.h++;*.inc;*.sh;*.cpy;*.if"></Folder>
+            Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.h++;*.inc;*.sh;*.cpy;*.if">
+            <F N="guicontrols/interpolatesettings/interpolatesettings.h"/>
+            <F N="guicontrols/settings/settingsdata.h"/>
+            <F N="guicontrols/settings/settingspane.h"/>
+            <F N="guicontrols/settings/settingswindow.h"/>
+            <F N="guicontrols/settings/simpleflowpane.h"/>
+            <F N="guicontrols/settings/textsetting.h"/>
+        </Folder>
         <Folder
             Name="Resource Files"
             Filters="*.ico;*.cur;*.dlg"/>

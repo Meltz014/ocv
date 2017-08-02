@@ -32,7 +32,12 @@ HEADERS += commontypes.h mainwindow.h \
            videoproc\rollingshutter.h \
            guicontrols\roll_time_group.h \
            guicontrols\exportgroup.h \
-           guicontrols\interpolatecontrolgroup.h
+           guicontrols\interpolatecontrolgroup.h \
+           guicontrols\settings\settingswindow.h \
+           guicontrols\settings\settingspane.h \
+           guicontrols\settings\simpleflowpane.h \
+           guicontrols\settings\textsetting.h \
+           guicontrols\settings\settingsdata.h
 
 SOURCES += main.cpp mainwindow.cpp \
            videoproc\interpolate.cpp \
@@ -40,7 +45,13 @@ SOURCES += main.cpp mainwindow.cpp \
            videoproc\rollingshutter.cpp \
            guicontrols\roll_time_group.cpp \
            guicontrols\exportgroup.cpp \
-           guicontrols\interpolatecontrolgroup.cpp
+           guicontrols\interpolatecontrolgroup.cpp \
+           guicontrols\settings\settingswindow.cpp \
+           guicontrols\settings\settingspane.cpp \
+           guicontrols\settings\simpleflowpane.cpp \
+           guicontrols\settings\textsetting.cpp \
+           guicontrols\settings\settingsdata.cpp
+
 
 TARGET = ocv
 INSTALLS += target

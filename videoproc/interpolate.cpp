@@ -11,7 +11,7 @@
  * @param N Number of interpolated frames to generate
  * @param f_type Type of flow to use
  */
-Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flow_type f_type )
+Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, SettingsData *settings )
 {
    this->from = from.getMat( );
    this->to = to.getMat( );
@@ -26,14 +26,10 @@ Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flo
    // calculate forward flow
    cv::Mat flow;
    qDebug( ) << "calculating flow";
-   switch ( f_type )
+   switch ( settings->getFlowtype( ) )
    {
    case SIMPLE_FLOW:
-      qDebug( ) << "simple flow";
-      cv::optflow::calcOpticalFlowSF( this->from,
-                                      this->to,
-                                      flow,
-                                      3, 2, 4);//, 4.1, 25.5, 18, 55.0, 25.5, 0.35, 18, 55.0, 25.5, 10 );
+      flow = doSimpleFlow( settings );
       break;
    case DEEP_FLOW:
       cv::cvtColor( this->from, from_gray, cv::COLOR_RGB2GRAY );
@@ -51,6 +47,62 @@ Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flo
    qDebug( ) << "done";
 
    cv::split( flow, this->flowxy );
+}
+
+Interpolater::Interpolater( cv::InputArray from, cv::InputArray to, uint8 N, flow_type f_type ) :
+   Interpolater( from, to, N, new SettingsData( f_type ) )
+{
+}
+
+cv::Mat Interpolater::doSimpleFlow( SettingsData *settings )
+{
+   cv::Mat flow;
+   int layers = 3;
+   int avg_block = 2;
+   int max_flow = 4;
+   double sigma_dist = 4.1;
+   double sigma_color = 25.5;
+   int postp_window = 18;
+   double sigma_dist_fix = 55.0;
+   double sigma_color_fix = 25.5;
+   double occ_thr = 0.35;
+   int up_avg_rad = 18;
+   double up_sigma_dist = 55.0;
+   double up_sigma_color = 25.5;
+   double speed_thr = 10.0;
+   settings->getIntSetting( LAYERS, layers );
+   settings->getIntSetting( AVG_BLOCK_SIZE, avg_block );
+   settings->getIntSetting( MAX_FLOW, max_flow );
+   settings->getDoubleSetting( SIGMA_DIST, sigma_dist );
+   settings->getDoubleSetting( SIGMA_COLOR, sigma_color );
+   settings->getIntSetting( POSTPROC_WINDOW, postp_window );
+   settings->getDoubleSetting( SIGMA_DIST_FIX, sigma_dist_fix );
+   settings->getDoubleSetting( SIGMA_COLOR_FIX, sigma_color_fix );
+   settings->getDoubleSetting( OCC_THR, occ_thr );
+   settings->getIntSetting( UPSCALE_AVG_RAD, up_avg_rad );
+   settings->getDoubleSetting( UPSCALE_SIGMA_DIST, up_sigma_dist );
+   settings->getDoubleSetting( UPSCALE_SIGMA_COLOR, up_sigma_color );
+   settings->getDoubleSetting( SPEED_UP_THR, speed_thr );
+
+   qDebug( ) << "doing simple flow";
+   cv::optflow::calcOpticalFlowSF( this->from,
+                                   this->to,
+                                   flow,
+                                   layers,
+                                   avg_block,
+                                   max_flow,
+                                   sigma_dist,
+                                   sigma_color,
+                                   postp_window,
+                                   sigma_dist_fix,
+                                   sigma_color_fix,
+                                   occ_thr,
+                                   up_avg_rad,
+                                   up_sigma_dist,
+                                   up_sigma_color,
+                                   speed_thr
+                                 );
+   return flow;
 }
 
 /**

@@ -13,9 +13,11 @@ MainWindow::MainWindow( )
    video_obj = Vid( );
    roll_time = 1.0f;
    interpolated_frames = 0;
+   interpolate_settings = new SettingsData( NO_FLOW );
 
    interpolate_control = new InterpolateGroup( "Frame Interpolation" );
-   connect(interpolate_control, SIGNAL(valueChanged(int)), this, SLOT(updateInterpolatedFrames( int )));
+   connect( interpolate_control, SIGNAL( valueChanged( int ) ), this, SLOT( updateInterpolatedFrames( int ) ) );
+   connect( interpolate_control, SIGNAL( settingsSaved( SettingsData * ) ), this, SLOT( updateInterpolateSettings( SettingsData * ) ) );
 
    slider = new RollTimeGroup("Set Roll Time", this);
    slider->setMinimum( 1 );
@@ -66,7 +68,7 @@ void MainWindow::generateEffectCallback( )
    RollingShutter *generator = new RollingShutter( &video_obj );
    connect( generator, SIGNAL( rowProcessed( ) ), this, SLOT( effectRowProcessed( ) ) );
    generator->setRollTime( roll_time );
-   generator->generateEffect( generated_img, interpolated_frames );
+   generator->generateEffect( generated_img, interpolated_frames, interpolate_settings );
    video_obj.getCurrentFrame( disp_img );
    updateGui( );
 }
@@ -229,6 +231,12 @@ void MainWindow::keyPressEvent( QKeyEvent * event )
 void MainWindow::updateInterpolatedFrames( int value )
 {
    interpolated_frames = value;
+}
+
+void MainWindow::updateInterpolateSettings( SettingsData *new_settings )
+{
+   qDebug( ) << "new settings";
+   interpolate_settings = new_settings;
 }
 
 /**
